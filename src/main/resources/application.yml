@@ -11,7 +11,7 @@ mybatis:
   mapper-locations:
   - classpath:com/example/demo/mapper/*.xml
   type-aliases-package: com.example.demo.entity
-  
+
 #eureka:
 #  client:
 #    serviceUrl:
