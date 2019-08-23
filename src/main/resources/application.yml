@@ -1,12 +1,14 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost/jeecg?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost/hello_world?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name: demo
-    
+  freemarker:
+        suffix: .html
+        charset: utf-8
 mybatis: 
   mapper-locations:
   - classpath:com/example/demo/mapper/*.xml

@@ -17,14 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import com.example.demo.entity.City;
 import com.example.demo.entity.JobAndTrigger;
 import com.example.demo.job.BaseJob;
 import com.example.demo.service.IJobAndTriggerService;
@@ -38,8 +35,9 @@ public class JobController
 	@Autowired
 	private IJobAndTriggerService iJobAndTriggerService;
 	
-	@Autowired
-	private RestTemplate restTemplate;
+	/*
+	 * @Autowired private RestTemplate restTemplate;
+	 */
 	
 	//加入Qulifier注解，通过名称注入bean
 	@Autowired @Qualifier("Scheduler")
@@ -52,7 +50,9 @@ public class JobController
 			@RequestParam(value="jobGroupName")String jobGroupName, 
 			@RequestParam(value="cronExpression")String cronExpression) throws Exception
 	{			
+		
 		addJob(jobClassName, jobGroupName, cronExpression);
+		log.info("addJob");
 	}
 	
 	public void addJob(String jobClassName, String jobGroupName, String cronExpression)throws Exception{
