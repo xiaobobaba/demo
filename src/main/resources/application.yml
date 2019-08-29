@@ -13,7 +13,11 @@ mybatis:
   mapper-locations:
   - classpath:com/example/demo/mapper/*.xml
   type-aliases-package: com.example.demo.entity
-
+  
+  
+logging:
+  level:
+    com.eth.wallet.mapper: debug
 #eureka:
 #  client:
 #    serviceUrl:

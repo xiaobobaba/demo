@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- USER -->
+<mapper namespace="com.example.demo.dao.UserDao">
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        user.ID, user.NAME, user.PASSWORD, user.EMAIL, user.touXiang, user.userName, user.SEX, user.CREATE_TIME, 
+        user.UPDATE_TIME
+    </sql>
+    
+    <!-- login登录 -->
+    <select id="findUserLogin" resultType="int" parameterType="com.example.demo.entity.UserEntity">
+        SELECT
+        count(1)
+        FROM USER user WHERE 1 = 1
+        <if test="id !=null and id != 0">
+        	AND user.id = #{id}
+        </if>
+        <if test="password != null and password != ''">
+            AND user.PASSWORD = #{password}
+        </if>
+        <if test="email != null and email != ''">
+            AND user.EMAIL = #{email}
+        </if>
+    </select>
+    
+        <!-- 根据条件参数查询数据列表 -->
+    <select id="findUserByCondition" resultType="com.example.demo.entity.UserEntity" parameterType="com.example.demo.entity.UserEntity">
+        SELECT
+        <include refid="allColumns" />
+        FROM USER user WHERE 1 = 1
+        <if test="id !=null and id != 0">
+        	AND user.id = #{id}
+        </if>
+        <if test="email != null and email != ''">
+            AND user.EMAIL LIKE CONCAT('%', #{email}, '%')
+        </if>
+        <if test="password != null and password != ''">
+            AND user.PASSWORD LIKE CONCAT('%', #{password}, '%')
+        </if>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertUser" parameterType="com.example.demo.entity.UserEntity">
+        INSERT INTO USER (
+              PASSWORD, EMAIL, touXiang, userName, SEX, CREATE_TIME, 
+            UPDATE_TIME
+        ) VALUES (
+            #{password},
+            #{email},
+            #{touXiang},
+            #{userName},
+            #{sex},
+          	sysdate(),
+            sysdate()
+        )
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateUser" parameterType="com.example.demo.entity.UserEntity">
+        UPDATE USER
+        <set>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email},
+            </if>
+            <if test="touXiang != null">
+                touXiang = #{touXiang},
+            </if>
+            <if test="userName != null">
+                userName = #{userName},
+            </if>
+            <if test="sex != null">
+                SEX = #{sex},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime}
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+    
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteUserByIds" parameterType="com.example.demo.entity.UserEntity">
+        DELETE FROM USER WHERE ID IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
