@@ -2,9 +2,7 @@ package com.example.demo.entity;
 
 import java.util.Date;
 
-
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * 
@@ -13,8 +11,12 @@ import lombok.Setter;
 　 * @author xiaobo 
 　 * @date 2019年8月24日
  */
-@Getter
-@Setter
+/*
+ * @Getter
+ * 
+ * @Setter
+ */
+@Data
 public class UserEntity implements java.io.Serializable {
     /** 版本号 */
     private static final long serialVersionUID = 7915187367634807077L;
@@ -39,14 +41,106 @@ public class UserEntity implements java.io.Serializable {
 
     /** 性别 */
     private String sex;
+    
+    /** 生日 */
+    private Date birthDay;
 
     /** 创建时间 */
     private Date createTime;
 
     /** 修改时间 */
     private Date updateTime;
-    
-    
+   
+    /** 自我介绍 */
+    private String zwjs;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTouXiang() {
+		return touXiang;
+	}
+
+	public void setTouXiang(String touXiang) {
+		this.touXiang = touXiang;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public Date getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getZwjs() {
+		return zwjs;
+	}
+
+	public void setZwjs(String zwjs) {
+		this.zwjs = zwjs;
+	}
 
 
 }
