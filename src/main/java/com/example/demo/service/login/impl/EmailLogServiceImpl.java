@@ -1,11 +1,11 @@
-package com.example.demo.service.impl;
+package com.example.demo.service.login.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.login.EmailLogDao;
 import com.example.demo.entity.login.EmaillogEntity;
-import com.example.demo.service.EmailLogService;
+import com.example.demo.service.login.EmailLogService;
 /**
  * 
 * @ClassName: EmailLogServiceImpl  

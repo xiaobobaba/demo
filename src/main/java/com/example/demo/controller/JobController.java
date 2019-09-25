@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.JobAndTrigger;
 import com.example.demo.job.BaseJob;
-import com.example.demo.service.IJobAndTriggerService;
+import com.example.demo.service.login.IJobAndTriggerService;
 import com.github.pagehelper.PageInfo;
 
 

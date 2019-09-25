@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+package com.example.demo.service.login.impl;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.JobAndTriggerMapper;
 import com.example.demo.entity.JobAndTrigger;
-import com.example.demo.service.IJobAndTriggerService;
+import com.example.demo.service.login.IJobAndTriggerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 

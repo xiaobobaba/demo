@@ -1,11 +1,11 @@
-package com.example.demo.service.impl;
+package com.example.demo.service.login.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.login.UserDao;
 import com.example.demo.entity.login.UserEntity;
-import com.example.demo.service.UserService;
+import com.example.demo.service.login.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 	* <p>Description: </p>  
 	* @param user
 	* @return  
-	* @see com.example.demo.service.UserService#findUserLogin(com.example.demo.entity.login.UserEntity)
+	* @see com.example.demo.service.login.UserService#findUserLogin(com.example.demo.entity.login.UserEntity)
 	 */
 	@Override
 	public int findUserLogin(UserEntity user) {
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 	* <p>Description: </p>  
 	* @param user
 	* @return  
-	* @see com.example.demo.service.UserService#insertUser(com.example.demo.entity.login.UserEntity)
+	* @see com.example.demo.service.login.UserService#insertUser(com.example.demo.entity.login.UserEntity)
 	 */
 	@Override
 	public int insertUser(UserEntity user) {
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 	* <p>Description: </p>  
 	* @param user
 	* @return  
-	* @see com.example.demo.service.UserService#insertWXUser(com.example.demo.entity.login.UserEntity)
+	* @see com.example.demo.service.login.UserService#insertWXUser(com.example.demo.entity.login.UserEntity)
 	 */
 	@Override
 	public int insertWXUser(UserEntity user) {
