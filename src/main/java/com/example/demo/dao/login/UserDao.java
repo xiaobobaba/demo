@@ -1,6 +1,6 @@
-package com.example.demo.dao;
+package com.example.demo.dao.login;
 
-import com.example.demo.entity.UserEntity;
+import com.example.demo.entity.login.UserEntity;
 
 /**
  * 
@@ -31,5 +31,17 @@ public interface UserDao {
 	* @return
 	 */
 	int insertUser(UserEntity user);
+	
+	/**
+	 * 
+	* @Title: insertWXUser  
+	* @Description: TODO(新增微信用户)  
+	* @param @param user
+	* @param @return    参数  
+	* @return int    返回类型  
+	* @date 2019年9月23日下午12:34:14  
+	* @throws
+	 */
+	int insertWXUser(UserEntity user);
 
 }

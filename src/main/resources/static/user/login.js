@@ -3,56 +3,102 @@ var login={
 	baseUrl : "http://xiaobo.nat300.top/",
 	addYZ: function(){
 		if($("#userName").val() ==''){
-			alert('姓名不能为空');
+			tankuang('姓名不能为空');
 			return ;
 		}
 		if($("#email").val() ==''){
-			alert('邮箱不能为空');
+			tankuang('邮箱不能为空');
 			return ;
 		}
 		if($("#passWord").val() ==''){
-			alert('密码不能为空');
+			tankuang('密码不能为空');
+			return ;
+		}
+		if($("#passWord2").val() != $("#passWord").val()){
+			tankuang('两次密码不一样');
+			return ;
+		}
+		if($("#passWord2").val() ==''){
+			tankuang('密码不能为空');
 			return ;
 		}
 		if($("#birthDay").val() ==''){
-			alert('生日不能为空');
+			tankuang('生日不能为空');
 			return ;
 		}
 		if($("#zwjs").val() ==''){
-			alert('自我介绍不能为空');
+			tankuang('自我介绍不能为空');
 			return ;
 		}
-		var params = $('#login_form').serializeArray();
-		 var obj = {}; //声明一个对象
-		 $.each(params, function(index, field) {
-             obj[field.name] = field.value; //通过变量，将属性值，属性一起放到对象中
-         })
+		$("#emailUser").val($("#email").val());
+		var params = $('#add_form').serializeArray();
+		ajax(login.baseUrl+'login/wxYanZheng',params,
+	        	function(data) {
+		        	isTK(data);
+		        	if(data.success){
+		        		layer.prompt({
+		      			  formType: 2,
+		      			  value: '请输入邮箱收到的验证码',
+		      			  title: '邮箱验证',
+		      			  area: ['250px', '30px'] //自定义文本域宽高
+		      			}, function(value, index, elem){
+		      				if(value ==null || value ==''){
+		      					return;
+		      				}
+		      				console.log(value);
+		      				$("#yzm").val(value);
+		      				var params = $('#add_form').serializeArray();
+		      				ajax(login.baseUrl+'login/userAdd',params,
+		      			        	function(data) {
+		      							isTK(data);
+		      							if(data.success){
+		      								window.location.href="http://xiaobo.nat300.top/xiaobo/index.html";
+		      							}
+		      				        	
+		      				     })
+		      			  layer.close(index);
+		      			});
+		        	}
+		     	});
          //JSON.stringify(obj)
-		$.ajax({
-	        url: login.baseUrl+'login/userAdd',
-	        type: 'POST',
-	        data: JSON.stringify(obj),
-	        contentType:"application/json",
-	        headers	:{'Content-Type': 'application/json;charset=UTF-8'},
-	        dataType :"json",
-	        success : function(data) {
-				if (data.result) { //登录成功
-					console.log("success");
-					location.href = "<%=basePath%>GB-canvas-turntable.html";  //跳转
-				} else { //登录失败
-					$("#errorFont").html("用户名或密码错误!");
-				}
-			},
-			error : function(data) {
-			},
-	      });
+        /*ajax(login.baseUrl+'login/userAdd',params,
+        	function(data) {
+	        	isTK(data);
+	        	$("#chishenme").click();
+	     	});*/
 	},
+	
+	login : function(){
+		if($("#email_login").val() ==''){
+			tankuang('邮箱不能为空');
+			return ;
+		}
+		if($("#passWord_login").val() ==''){
+			tankuang("密码不能为空！");
+			return ;
+		}
+		 var params = $('#login_form').serializeArray();
+         ajax(login.baseUrl+'login/login',params,
+         	function(data) {
+        	 isTK(data);
+        	 if(data.success){
+        		 window.location.href="http://xiaobo.nat300.top/xiaobo/index.html";
+				}
+         });
+	},
+	
+	
+	//点击调用文件上传按钮
 	img_import : function() {
 		$("#file-input").click();
+	},
+	zhuce : function() {
+		$("#zhuce").click();
 	},
 	
 };
 $(function() {
+	//图片上传
 	$("#file-input").on("change", function() {
 		//获取文件对象，files是文件选取控件的属性，存储的是文件选取控件选取的文件对象，类型是一个数组
 	    var fileObj = this.files[0];
@@ -72,6 +118,7 @@ $(function() {
 	        processData: false,
 	        success: function (data) {
 	        	document.getElementById("img_import").src ="/"+data.obj
+	        	$("#touXiang").val("/"+data.obj);
 	        	$("#imgName").text(da);
 	        },
 	    });
@@ -82,8 +129,17 @@ $(function() {
 	//点击图片打开文件上传
 	$("#img_import").click(login.img_import);
 	$("#birthDay").val(dateShow('yyyy-MM-dd',new Date));
-	// $(".button-success").click(login.addYZ);
-	/*$(document).on('click','.button-success',function () {
-	   	 $.toast("操作失败");
-	    });*/
+	//$("#isPassword_login").click();
+	$(document).on('click','.checkbox',function () {
+		tankuang("记住密码")
+	 });
+	//
+	$("#sex").change(function(){
+		if($("#sex").val()=="1"){
+			$("#nv").html('<i class="layui-icon">&#xe662;</i>&nbsp&nbsp');
+		}else{
+			$("#nv").html('<i class="layui-icon">&#xe661;</i>&nbsp&nbsp');
+		}
+		
+	});
 });

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- USERS -->
+<mapper namespace="com.example.demo.dao.login.UserDao">
+    <!-- login登录 -->
+    <select id="findUserLogin" resultType="int" parameterType="com.example.demo.entity.login.UserEntity">
+        SELECT
+        count(userId)
+        FROM user_info USERS WHERE 1 = 1
+        <if test="userId !=null and userId != 0">
+        	AND USERS.userId = #{userId}
+        </if>
+        <if test="openId !=null and openId != ''">
+        	AND USERS.openId = #{openId}
+        </if>
+        <if test="password != null and password != ''">
+            AND USERS.PASSWORD = #{password}
+        </if>
+        <if test="email != null and email != ''">
+            AND USERS.EMAIL = #{email}
+        </if>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertUser" parameterType="com.example.demo.entity.login.UserEntity">
+        INSERT INTO user_info (
+              PASSWORD, EMAIL, touXiang, name, SEX,birthDay, createTime,isWxUser
+        ) VALUES (
+            #{password},
+            #{email},
+            #{touXiang},
+            #{name},
+            #{sex},
+            #{birthDay},
+          	sysdate(),
+          	'no'
+        )
+    </insert>
+    
+     <!-- 插入数据 -->
+    <insert id="insertWXUser" parameterType="com.example.demo.entity.login.UserEntity">
+        INSERT INTO user_info (openId,
+                touXiang, name,
+                 <if test="sex !=null and sex!=''">
+            		SEX,
+            	 </if>
+                 	isWxUser,
+                 <if test="country !=null and country !=''">
+            		country,
+            	 </if>
+            	 <if test="province !=null and province !=''">
+            		province,
+            	 </if><if test="city !=null and city !=''">
+            		city,
+           		 </if>createTime
+        ) VALUES (
+        	#{openId},
+            #{touXiang},
+            #{name},
+            <if test="sex !=null and sex!=''">
+            	#{sex},
+            </if>
+          	'yes',
+          	<if test="country !=null and country !=''">
+            	#{country},
+            </if>
+          	<if test="province !=null and province !=''">
+            	#{province},
+            </if>
+            <if test="city !=null and city !=''">
+            	#{city},
+            </if>
+          	sysdate()
+        )
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="updateUser" parameterType="com.example.demo.entity.login.UserEntity">
+        UPDATE user_info
+        <set>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="password != null">
+                PASSWORD = #{password},
+            </if>
+            <if test="email != null">
+                EMAIL = #{email},
+            </if>
+            <if test="touXiang != null">
+                touXiang = #{touXiang},
+            </if>
+            <if test="sex != null">
+                SEX = #{sex},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                updateTime = #{updateTime}
+            </if>
+        </set>
+        WHERE userId = #{id}
+    </update>
+</mapper>

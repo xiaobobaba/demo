@@ -1,6 +1,16 @@
 server:
   port: 80
 spring:
+  #qq邮箱发送登录验证
+  mail: 
+    host: smtp.163.com
+    #你的163邮箱账户
+    username: 18273288578@163.com
+    #你的163邮箱第三方授权码
+    password : wy18273288578
+    #编码类型
+    default-encoding: UTF-8
+  
   datasource:
     url: jdbc:mysql://47.100.54.147/hello_world?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
@@ -28,12 +38,19 @@ mybatis:
   - classpath:com/example/demo/mapper/*.xml
   type-aliases-package: com.example.demo.entity
   
-  
+publicvariable:
+  WX_APP_ID: wx204632ba17db64ca
+  WX_APP_KEY: e3a96b1ee959fc60364e49ced54698bb
+  yuming: http://xiaobo.nat300.top
+
 logging:
   level:
-    com.eth.wallet.mapper: debug
+     com.example.demo.dao : debug
 #eureka:
 #  client:
 #    serviceUrl:
 #      defaultZone: http://127.0.0.1:9999/eureka
+#这里以QQ邮箱为例
+#QQ邮箱服务器
+  
 
