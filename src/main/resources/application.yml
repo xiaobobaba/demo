@@ -35,7 +35,7 @@ spring:
     static-path-pattern: /**
 mybatis: 
   mapper-locations:
-  - classpath:com/example/demo/mapper/*.xml
+  - classpath:com/example/demo/mapper/*/*.xml
   type-aliases-package: com.example.demo.entity
   
 publicvariable:

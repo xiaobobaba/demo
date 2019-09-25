@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.cred.CardCommentDao">
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        c.commentId, c.cardId, c.commentContent, c.createTime, c.userId, c.userName
+    </sql>
+    
+    <select id="selectUserCard" resultType="com.example.demo.entity.cred.CardCommentEntity"  parameterType="com.example.demo.entity.cred.CardCommentEntity">
+    		select <include refid="allColumns" /> from CARDCOMMENT c
+    </select>
+    <select id="selectUserCardById" resultType="com.example.demo.entity.cred.CardCommentEntity" parameterType="com.example.demo.entity.cred.CardCommentEntity">
+    		select <include refid="allColumns" /> from CARDCOMMENT c
+    		where cardId=#{cardId}
+    </select>
+    <!-- 插入数据 -->
+    <insert id="insertCardcomment" parameterType="com.example.demo.entity.cred.CardCommentEntity">
+        INSERT INTO CARDCOMMENT (
+            cardId, commentContent, createTime, userId
+        ) VALUES (
+            #{cardId},
+            #{commentContent},
+            #{createTime},
+            #{userId}
+        )
+    </insert>
+    
+</mapper>

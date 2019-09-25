@@ -118,6 +118,7 @@
 		var itemsPerLoad = 3;
 		var lastIndex = 0;
 		var heig = 0;
+		var userCardCount = 0;
 		$(function() {
 			function addItems(number, lastIndex) {
 				// 生成新条目的HTML
@@ -160,6 +161,14 @@
 						var h = Math.max(document.documentElement.clientHeight,
 								document.body.clientHeight);
 						if ($('.content').scrollTop() > h + heig) {
+							ajax(login.baseUrl+'userCard/findUserCard',null,
+						         	function(data) {
+						        	 isTK(data);
+						        	 if(data.success){
+						        		console.log(data.list)
+										}
+						         });
+							
 							addItems(itemsPerLoad, lastIndex);
 							heig = heig + 1200;
 							$.refreshScroller();

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- USERCARD -->
+<mapper namespace="com.example.demo.dao.cred.UserCardDao">
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        u.cardId, u.userId, u.cardTitle, u.cardMusic, u.CARDFILM
+		CARDFILM, u.cardContent, u.cardImg, u.cardImg2, 
+        u.cardImg3, u.cardImg4, u.cardImg5, u.cardImg6, u.cardImg7, u.cardImg8, u.cardImg9, u.goodCount, 
+        u.createTime
+    </sql>
+    <select id="findUserCard" resultType="com.example.demo.entity.cred.UserCardEntity" parameterType="com.example.demo.entity.cred.UserCardEntity">
+    	select <include refid="allColumns" /> from USERCARD u
+    </select>
+    <select id="findUserCardById" resultType="com.example.demo.entity.cred.UserCardEntity" parameterType="com.example.demo.entity.cred.UserCardEntity">
+    	select <include refid="allColumns" /> from USERCARD u
+    	where 	1=1
+    			<if test="cardId !=null and cardId != 0">
+        			AND u.cardId = #{cardId}
+       		 	</if>
+       		 	<if test="userId !=null and userId != 0">
+        			AND u.userId = #{userId}
+       		 	</if>
+    </select>
+    
+    <!-- 插入数据 -->
+    <insert id="insertUsercard" parameterType="com.example.demo.entity.cred.UserCardEntity">
+        INSERT INTO USERCARD (
+            cardId, userId, cardTitle, cardMusic, CARDFILM
+
+CARDFILM, cardContent, cardImg, cardImg2, 
+            cardImg3, cardImg4, cardImg5, cardImg6, cardImg7, cardImg8, cardImg9, goodCount, 
+            createTime
+        ) VALUES (
+            #{cardId},
+            #{userId},
+            #{cardTitle},
+            #{cardMusic},
+            #{cardfilm
+
+cardfilm},
+            #{cardContent},
+            #{cardImg},
+            #{cardImg2},
+            #{cardImg3},
+            #{cardImg4},
+            #{cardImg5},
+            #{cardImg6},
+            #{cardImg7},
+            #{cardImg8},
+            #{cardImg9},
+            #{goodCount},
+            #{createTime}
+        )
+    </insert>
+    
+</mapper>
