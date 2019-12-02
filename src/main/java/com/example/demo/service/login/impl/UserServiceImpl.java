@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	* @see com.example.demo.service.login.UserService#findUserLogin(com.example.demo.entity.login.UserEntity)
 	 */
 	@Override
-	public int findUserLogin(UserEntity user) {
+	public UserEntity findUserLogin(UserEntity user) {
 		return userDao.findUserLogin(user);
 	}
 	/**

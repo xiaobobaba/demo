@@ -28,5 +28,27 @@ public interface UserCardService {
 	* @throws
 	 */
 	public List<UserCardEntity> findUserCardById(UserCardEntity userCard);
+	
+	/**
+	 * 
+	* @Title: findUserCardCount  
+	* @Description: TODO(查询卡片总数)  
+	* @param @return    参数  
+	* @return int    返回类型  
+	* @date 2019年9月26日下午1:38:27  
+	* @throws
+	 */
+	public int findUserCardCount();
+	
+	/**
+	 * 
+	* @Title: 添加卡片
+	* @Description: TODO(添加卡片)  
+	* @param @return    参数  
+	* @return int    返回类型  
+	* @date 2019年10月16日上午10:01:25  
+	* @throws
+	 */
+	public int insertUsercard(UserCardEntity UserCard);
 
 }

@@ -30,6 +30,7 @@ public class CardCommentController {
 				return param;
 			}
 			param.setList(cardCommentService.selectCardComment(userCard));
+			param.setSuccess(true);
 		} catch (Exception e) {
 			param.setSuccess(false);
 			param.setIsTan("操作失败");

@@ -25,6 +25,7 @@ import com.example.demo.service.login.EmailLogService;
 import com.example.demo.service.login.UserService;
 import com.example.demo.util.HttpURLConectionGET;
 import com.example.demo.util.MathUtil;
+import com.example.demo.util.RedisUtil;
 import com.example.demo.util.ReturnParam;
 import com.example.demo.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +56,9 @@ public class UserLoginController {
 	//发送邮箱
 	@Autowired
     private JavaMailSender jms; //自动注入的Bean
+	
+	@Autowired
+	private RedisUtil redis;
 
 	/**
 	 * 
@@ -71,10 +75,11 @@ public class UserLoginController {
 		System.out.println("------------------------------");
 		try {
 			user.setPassword(MathUtil.getMD5(user.getEmail() + "#" + user.getPassword()));
-			int count = userService.findUserLogin(user);
-			if (count > 0) {
+			UserEntity userLogin = userService.findUserLogin(user);
+			if (userLogin != null) {
 				param.setSuccess(true);
 				param.setIsTan("登录成功!");
+				redis.set("user", userLogin);
 			} else {
 				param.setIsTan("用户名密码不正确!");
 				param.setSuccess(false);
@@ -126,8 +131,8 @@ public class UserLoginController {
 				return param;
 			}
 			user.setPassword(MathUtil.getMD5(user.getEmail() + "#" + user.getPassword()));
-			int count = userService.findUserLogin(user);
-			if(count > 0) {
+			UserEntity userLogin = userService.findUserLogin(user);
+			if (userLogin != null) {
 				param.setIsTan("用户已存在!");
 				param.setSuccess(false);
 				return param;
@@ -195,8 +200,8 @@ public class UserLoginController {
 			}
 			UserEntity user = new UserEntity();
 			user.setOpenId(wx.getOpenid());
-			int count = userService.findUserLogin(user);
-			if(count <= 0) {
+			UserEntity userLogin = userService.findUserLogin(user);
+			if (userLogin == null) {
 				user.setCity(wx.getCity());
 				user.setProvince(wx.getProvince());
 				user.setCountry(wx.getCountry());
@@ -204,6 +209,7 @@ public class UserLoginController {
 				user.setTouXiang(wx.getHeadimgurl());
 				user.setName(wx.getNickname());
 				user.setSex(wx.getSex());
+				redis.set("user", user);
 				userService.insertWXUser(user);
 			}
 			//创建Cookie

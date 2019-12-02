@@ -19,7 +19,7 @@ public interface UserDao {
 	* @param user
 	* @return
 	 */
-	int findUserLogin(UserEntity user);
+	UserEntity findUserLogin(UserEntity user);
 	
 	/**
 	 * 

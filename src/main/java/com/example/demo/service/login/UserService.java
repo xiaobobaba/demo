@@ -20,7 +20,7 @@ public interface UserService {
 	* @param user
 	* @return
 	 */
-	int findUserLogin(UserEntity user);
+	UserEntity findUserLogin(UserEntity user);
 	
 	/**
 	 * 

@@ -1,4 +1,15 @@
 //封装的时间
+function add0(m){return m<10?'0'+m:m }
+function format(times){
+    var time = new Date(times);
+    var y = time.getFullYear();
+    var m = time.getMonth()+1;
+    var d = time.getDate();
+    var h = time.getHours();
+    var mm = time.getMinutes();
+    var s = time.getSeconds();
+    return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s);
+}
 function dateShow(fmt,date){
 			  var o = {   
 			    "M+" : date.getMonth()+1,                 // 月份
@@ -43,9 +54,11 @@ function isTK(data){
 // 封装的ajax
 function ajax(url,params,success,async){
 	var obj ={};
-	$.each(params, function(index, field) {
-        obj[field.name] = field.value; // 通过变量，将属性值，属性一起放到对象中
-    })
+	if(params != null){
+		$.each(params, function(index, field) {
+	        obj[field.name] = field.value; // 通过变量，将属性值，属性一起放到对象中
+	    })
+	}
 	$.ajax({
 	async: async,
     url: url,

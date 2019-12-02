@@ -25,7 +25,7 @@ public class UserCardServiceImpl implements UserCardService {
 	 */
 	@Override
 	public List<UserCardEntity> findUserCard(UserCardEntity userCard) {
-		return userCardDao.findUserCard(UserCard);
+		return userCardDao.findUserCard(userCard);
 	}
 	/**
 	 * 
@@ -39,7 +39,26 @@ public class UserCardServiceImpl implements UserCardService {
 	 */
 	@Override
 	public List<UserCardEntity> findUserCardById(UserCardEntity userCard) {
-		return userCardDao.findUserCardById(UserCard);
+		return userCardDao.findUserCardById(userCard);
+	}
+	
+	/**
+	 * 
+	* @Title: findUserCardCount  
+	* @Description: TODO(查询卡片总数)  
+	* @param @return    参数  
+	* @return int    返回类型  
+	* @date 2019年9月26日下午1:38:27  
+	* @throws
+	 */
+	@Override
+	public int findUserCardCount() {
+		// TODO Auto-generated method stub
+		return userCardDao.findUserCardCount();
+	}
+	@Override
+	public int insertUsercard(UserCardEntity UserCard) {
+		return userCardDao.insertUsercard(UserCard);
 	}
 
 }

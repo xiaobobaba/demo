@@ -123,7 +123,11 @@
 													<div class="item-media">
 													<i class="layui-icon" id="weixin">&#xe677;</i>&nbsp&nbsp
 													</div>
-														<div class="item-title label">微信登录</div>
+														<div class="item-title label" style="right: 00px;">微信登录</div>
+														<div class="item-input">
+															<div class="item-title" >qq登录暂未开发</div>
+														</div>
+														
 													</div>
 												</div>
 											</li>
@@ -399,7 +403,7 @@ $(document).ready(function(){
 			duration:8000,
 			callback:function (){
 				//中奖提示
-				$.alert("等会吃："+txt);
+				tankuang("等会吃："+txt);
 				turnplate.bRotate = !turnplate.bRotate;
 			}
 		});

@@ -4,9 +4,9 @@
 <!-- USERS -->
 <mapper namespace="com.example.demo.dao.login.UserDao">
     <!-- login登录 -->
-    <select id="findUserLogin" resultType="int" parameterType="com.example.demo.entity.login.UserEntity">
+    <select id="findUserLogin" resultType="com.example.demo.entity.login.UserEntity" parameterType="com.example.demo.entity.login.UserEntity">
         SELECT
-        count(userId)
+        	*
         FROM user_info USERS WHERE 1 = 1
         <if test="userId !=null and userId != 0">
         	AND USERS.userId = #{userId}

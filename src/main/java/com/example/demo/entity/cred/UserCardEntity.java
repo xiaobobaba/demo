@@ -64,4 +64,19 @@ public class UserCardEntity {
 
     /** 创建时间 */
     private Date createTime;
+    
+    /** 用户姓名 */
+    private String name;
+    
+    /** 用户头像 */
+    private String touXiang;
+    
+    /** 最新评论 */
+    private String commentContent;
+    
+    /** 开始条数*/
+    private int startIndex;
+    
+    /** 结束条数*/
+    private int index;
 }

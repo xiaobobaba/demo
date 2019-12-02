@@ -27,6 +27,6 @@ public class ReturnParam<T> {
 	    /**
 	             * 其他的对象，可以使用Map<String, Object>的格式添加
 	     */
-	    private Object obj;         
+	    private Object obj;
 
 }
