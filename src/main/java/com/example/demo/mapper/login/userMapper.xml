@@ -22,6 +22,23 @@
         </if>
     </select>
     
+     <select id="findUserRole" resultType="com.example.demo.entity.user.UserRolePrivilege" parameterType="com.example.demo.entity.login.UserEntity">
+		SELECT	r.roleType,
+				r.roleTypeName,
+				p.privilegeName,
+				p.privilegeCode,
+				p.parentId,
+				p.getUrl
+		FROM role_privilege rp LEFT JOIN user_privilege p on rp.privilegeId = p.privilegeId 
+		left join user_role r on rp.roleId = r.roleType
+		where 	rp.status = '1'
+		and		p.status = '1'
+		and   	r.status = '1'
+		<if test="password != null and password != '' and email != null and email != ''">
+        and   r.roleType = (select roleType from user_info u where u.email=#{email} and u.password=#{password})
+        </if>
+    </select>
+    
     <!-- 插入数据 -->
     <insert id="insertUser" parameterType="com.example.demo.entity.login.UserEntity">
         INSERT INTO user_info (

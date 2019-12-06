@@ -8,6 +8,9 @@ import java.util.Date;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,6 +26,7 @@ import com.example.demo.entity.login.UserEntity;
 import com.example.demo.entity.login.WXEntity;
 import com.example.demo.service.login.EmailLogService;
 import com.example.demo.service.login.UserService;
+import com.example.demo.shiro.ShiroConfig;
 import com.example.demo.util.HttpURLConectionGET;
 import com.example.demo.util.MathUtil;
 import com.example.demo.util.RedisUtil;
@@ -39,6 +43,8 @@ public class UserLoginController {
 	 */
 	@Autowired
 	UserService userService;
+	@Autowired
+	ShiroConfig shiroConfig;
 	/**
 	 * 邮箱操作
 	 */
@@ -72,18 +78,18 @@ public class UserLoginController {
 	@RequestMapping("/login")
 	public ReturnParam<String> login(@RequestBody UserEntity user){
 		ReturnParam<String> param = new ReturnParam<String>();
-		System.out.println("------------------------------");
 		try {
-			user.setPassword(MathUtil.getMD5(user.getEmail() + "#" + user.getPassword()));
-			UserEntity userLogin = userService.findUserLogin(user);
-			if (userLogin != null) {
-				param.setSuccess(true);
-				param.setIsTan("登录成功!");
-				redis.set("user", userLogin);
-			} else {
+			SecurityUtils.setSecurityManager(shiroConfig.securityManager());
+			Subject subject = SecurityUtils.getSubject();
+			//用户登录认证
+			UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(),user.getPassword());
+			try {
+				subject.login(token);
+			} catch (Exception e) {
 				param.setIsTan("用户名密码不正确!");
 				param.setSuccess(false);
-			} 
+				return param;
+			}
 		} catch (Exception e) {
 			param.setSuccess(false);
 			param.setIsTan("操作失败");

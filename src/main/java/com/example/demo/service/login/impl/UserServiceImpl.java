@@ -1,10 +1,13 @@
 package com.example.demo.service.login.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.login.UserDao;
 import com.example.demo.entity.login.UserEntity;
+import com.example.demo.entity.user.UserRolePrivilege;
 import com.example.demo.service.login.UserService;
 @Service
 public class UserServiceImpl implements UserService {
@@ -46,6 +49,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int insertWXUser(UserEntity user) {
 		return userDao.insertWXUser(user);
+	}
+	/**
+	 * 
+	* @Title: findUserRole  
+	* @Description: TODO(查询用户的权限)  
+	* @param @param user
+	* @param @return    参数  
+	* @return Set<UserRolePrivilege>    返回类型  
+	* @date 2019年12月3日下午2:42:05  
+	* @throws
+	 */
+	@Override
+	public List<UserRolePrivilege> findUserRole(UserEntity user) {
+		return userDao.findUserRole(user);
 	}
 
 }

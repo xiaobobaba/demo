@@ -3,6 +3,7 @@ package com.example.demo.shiro;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,11 @@ public class ShiroConfig {
         //游客，开发权限
         filterChainDefinitionMap.put("/user/**", "anon");
         //用户，需要角色权限 “user”
-        filterChainDefinitionMap.put("/xiaobo/**", "roles[user]");
+        filterChainDefinitionMap.put("/xiaobo/**", "roles[index]");
         //管理员，需要角色权限 “admin”
-        filterChainDefinitionMap.put("/xiaobo/**", "roles[admin]");
+        filterChainDefinitionMap.put("/admin/**", "roles[admin]");
         //开放登陆接口
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/login/login", "anon");
         
         //其余接口一律拦截        
         //该这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
@@ -52,6 +53,10 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
+		matcher.setHashAlgorithmName("md5");
+		matcher.setHashIterations(1);
+		myShiroRealm.setCredentialsMatcher(matcher);
         // 设置realm.
         securityManager.setRealm(myShiroRealm);
         return securityManager;

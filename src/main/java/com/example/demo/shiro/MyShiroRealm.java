@@ -2,6 +2,7 @@
 package com.example.demo.shiro;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.shiro.authc.AccountException;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.entity.login.UserEntity;
+import com.example.demo.entity.user.UserRolePrivilege;
 import com.example.demo.service.login.UserService;
 import com.example.demo.util.MathUtil;
 import com.example.demo.util.StringUtil;
@@ -37,32 +39,25 @@ public class MyShiroRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
-			throws AuthenticationException { 
-		// System.out.println("————身份认证方法————");
+			throws AuthenticationException {
+		
 		UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-		char[] charpassword = token.getPassword();
-		String password = "";
-		for (int i = 0; i < charpassword.length; i++) {
-			password = password+charpassword[i];
-		}
-		if(StringUtil.isNull(token.getUsername())) {
-			return	null;
-		}
-		if(StringUtil.isNull(password)) {
+		String password =  String.valueOf(token.getPassword());
+		
+		//账号密码不为空
+		if(StringUtil.isNull(token.getUsername()) || StringUtil.isNull(password)) {
 			return	null;
 		}
 		UserEntity user = new UserEntity();
-		user.setPassword(password);
-		System.out.println(MathUtil.getMD5(password));
-		System.out.println(MathUtil.getMD5(password));
+		user.setPassword(MathUtil.getMD5(password));
 		user.setEmail(token.getUsername());
-		
 		user = userService.findUserLogin(user);
 		
 		if(user == null) {
 			throw new AccountException("账号密码错误");
 		}
-		return new SimpleAuthenticationInfo(user.getEmail(), user.getPassword(), getName());
+		SimpleAuthenticationInfo simpleAuthenticationInfo= new SimpleAuthenticationInfo(user.getEmail(), user.getPassword(), getName());
+		return simpleAuthenticationInfo;
 	}
 
 	/**
@@ -71,11 +66,18 @@ public class MyShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) { //
 		System.out.println("————权限认证————");
-		//String username = (String) SecurityUtils.getSubject().getPrincipal();
+		String username = (String) principalCollection.getPrimaryPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(); 
-		// 获得该用户角色
-		//String role = userMapper.getRole(username);
+		UserEntity user = new UserEntity();
+		user.setEmail(username);
 		Set<String> set = new HashSet<>();
+		List<UserRolePrivilege> list = userService.findUserRole(user);
+		if(list.size() > 0 && list != null) {
+			for (UserRolePrivilege userRolePrivilege : list) {
+				// 获得该用户角色
+				set.add(userRolePrivilege.getPrivilegeCode());
+			}
+		}
 		// 需要将 role封装到 Set 作为 info.setRoles()的参数 // set.add(role); //设置该用户拥有的角色
 		info.setRoles(set);
 		return info;

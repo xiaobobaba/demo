@@ -1,6 +1,9 @@
 package com.example.demo.dao.login;
 
+import java.util.List;
+
 import com.example.demo.entity.login.UserEntity;
+import com.example.demo.entity.user.UserRolePrivilege;
 
 /**
  * 
@@ -43,5 +46,17 @@ public interface UserDao {
 	* @throws
 	 */
 	int insertWXUser(UserEntity user);
+	
+	/**
+	 * 
+	* @Title: findUserRole  
+	* @Description: TODO(查询用户的权限)  
+	* @param @param user
+	* @param @return    参数  
+	* @return Set<UserRolePrivilege>    返回类型  
+	* @date 2019年12月3日下午2:42:05  
+	* @throws
+	 */
+	List<UserRolePrivilege> findUserRole(UserEntity user);
 
 }
