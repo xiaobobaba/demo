@@ -192,7 +192,6 @@
 				isTK(data);
 				if (data.success) {
 					maxIndex = data.total;
-					console.log(maxIndex)
 					addItems(data.list);
 				}
 			});
@@ -202,8 +201,13 @@
 				var html = '';
 				for (var i = 0 ; i < list.length; i++) {
 					startInd = startInd + 1;
-					if(list[i].commentContent != null && list[i].commentContent !=''){
-						var str = list[i].commentContent.substr(0,10);
+					var str = list[i].commentContent;
+					var cardContent = list[i].cardContent;
+					if(str != null && str !=''){
+						str = str.substr(0,10);
+					}
+					if(cardContent != null && cardContent !=''){
+						cardContent = cardContent.substr(0,10);
 					}
 					html += /*头像  */ 
 		  				'<div class="card facebook-card" id="all'+i+'">'
@@ -222,7 +226,7 @@
 						//主题内容
 						+'<div class="card-content-inner">'//list[0].createTime
 						+'<p class="color-gray">发表于 '+format(list[i].createTime)+'</p>'
-						+'<p>内容：'+(list[i].cardContent.substr(0,10)||'')+'</p>'
+						+'<p>内容：'+(cardContent||'')+'</p>'
 						+'<p>评论：'+(str||'')+'</p>'
 						+'</div>'
 						//最下层 

@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +53,18 @@ public class UserCardController {
 		return param;
 	}
 	
+	/**
+	 * 
+	* @Title: findUserCard  
+	* @Description: TODO(查询卡片)  
+	* @param @param userCard
+	* @param @return    参数  
+	* @return ReturnParam<UserCardEntity>    返回类型  
+	* @date 2019年10月12日上午10:42:24  
+	* @throws
+	 */
 	@RequestMapping(value="/findUserCard")
+	@RequiresPermissions("user:index:card")
 	public ReturnParam<UserCardEntity> findUserCard(@RequestBody UserCardEntity userCard){
 		ReturnParam<UserCardEntity> param = new ReturnParam<UserCardEntity>();
 		try {
@@ -101,12 +114,14 @@ public class UserCardController {
 	 	return param;
     }
 	@RequestMapping("/importCard")
+	@RequiresPermissions("card:import")
 	public void importCard(String filepath) {
-		filepath="D:\\touxiang\\cardImg\\Camera";
+		filepath="D:\\touxiang\\cardImg";
 		UserCardEntity userCard = new UserCardEntity();
-		userCard.setUserId((long) 33);
-		userCard.setCardTitle("我的相册");
+		userCard.setUserId((long) 37);
+		userCard.setCardTitle("随便找几张凑合");
 		userCard.setCommentContent("好看！");
+		userCard.setCardContent("啦啦啦阿拉啦啦啦啦啦啦啦");
 		try {
 
 			File file = new File(filepath);
@@ -125,7 +140,7 @@ public class UserCardController {
 						System.out.println("path=" + readfile.getPath());
 						System.out.println("absolutepath=" + readfile.getAbsolutePath());
 						System.out.println("name=" + readfile.getName());
-						userCard.setCardImg("/cardImg/Camera/"+readfile.getName());
+						userCard.setCardImg("/cardImg/"+readfile.getName());
 						userCard.setCardContent(StringUtils.substringBetween(readfile.getName(), "_", "."));
 						userCardService.insertUsercard(userCard);
 					} else if (readfile.isDirectory()) {

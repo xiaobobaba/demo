@@ -3,7 +3,6 @@ package com.example.demo;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.subject.Subject;
 import org.junit.Test;
@@ -24,16 +23,12 @@ public class ShiroTest {
 	@Autowired
 	private MyShiroRealm myShiroRealm;
 	
+	
 	@Test
 	public void Test() {
 		// 搭建securitymanager环境
 		DefaultSecurityManager defaultsecuritymanager = new DefaultSecurityManager();
-		 HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
-			matcher.setHashAlgorithmName("md5");
-			matcher.setHashIterations(1);
-			myShiroRealm.setCredentialsMatcher(matcher);
-			defaultsecuritymanager.setRealm(myShiroRealm);
-		//shiroConfig.securityManager();
+		defaultsecuritymanager.setRealm(myShiroRealm);
 		//主题提交认证请求
 		SecurityUtils.setSecurityManager(defaultsecuritymanager);
 		Subject subject = SecurityUtils.getSubject();

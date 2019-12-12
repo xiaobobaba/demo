@@ -26,9 +26,9 @@ import com.example.demo.entity.login.UserEntity;
 import com.example.demo.entity.login.WXEntity;
 import com.example.demo.service.login.EmailLogService;
 import com.example.demo.service.login.UserService;
+import com.example.demo.shiro.PasswordHelper;
 import com.example.demo.shiro.ShiroConfig;
 import com.example.demo.util.HttpURLConectionGET;
-import com.example.demo.util.MathUtil;
 import com.example.demo.util.RedisUtil;
 import com.example.demo.util.ReturnParam;
 import com.example.demo.util.StringUtil;
@@ -65,6 +65,9 @@ public class UserLoginController {
 	
 	@Autowired
 	private RedisUtil redis;
+	
+	@Autowired
+	private PasswordHelper passwordHelper;
 
 	/**
 	 * 
@@ -79,20 +82,17 @@ public class UserLoginController {
 	public ReturnParam<String> login(@RequestBody UserEntity user){
 		ReturnParam<String> param = new ReturnParam<String>();
 		try {
-			SecurityUtils.setSecurityManager(shiroConfig.securityManager());
+			//SecurityUtils.setSecurityManager(shiroConfig.securityManager());
 			Subject subject = SecurityUtils.getSubject();
 			//用户登录认证
 			UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(),user.getPassword());
-			try {
-				subject.login(token);
-			} catch (Exception e) {
-				param.setIsTan("用户名密码不正确!");
-				param.setSuccess(false);
-				return param;
-			}
+			subject.login(token);
+			param.setSuccess(true);
+			param.setIsTan("登录成功");
 		} catch (Exception e) {
 			param.setSuccess(false);
-			param.setIsTan("操作失败");
+			param.setIsTan("账号密码错误");
+			System.out.println(e);
 			log.info("不好了报错了："+e);
 			return param;
 		}
@@ -136,13 +136,14 @@ public class UserLoginController {
 				param.setSuccess(false);
 				return param;
 			}
-			user.setPassword(MathUtil.getMD5(user.getEmail() + "#" + user.getPassword()));
+			passwordHelper.encryptPassword(user);
 			UserEntity userLogin = userService.findUserLogin(user);
 			if (userLogin != null) {
 				param.setIsTan("用户已存在!");
 				param.setSuccess(false);
 				return param;
 			}
+			user.setRoleType("3");
 			int userCount = userService.insertUser(user);
 			if (userCount > 0) {
 				param.setSuccess(true);
@@ -208,6 +209,7 @@ public class UserLoginController {
 			user.setOpenId(wx.getOpenid());
 			UserEntity userLogin = userService.findUserLogin(user);
 			if (userLogin == null) {
+				user.setRoleType("3");
 				user.setCity(wx.getCity());
 				user.setProvince(wx.getProvince());
 				user.setCountry(wx.getCountry());

@@ -42,7 +42,7 @@
     <!-- 插入数据 -->
     <insert id="insertUser" parameterType="com.example.demo.entity.login.UserEntity">
         INSERT INTO user_info (
-              PASSWORD, EMAIL, touXiang, name, SEX,birthDay, createTime,isWxUser
+              PASSWORD, EMAIL, touXiang, name, SEX,birthDay, createTime,isWxUser,roleType
         ) VALUES (
             #{password},
             #{email},
@@ -51,7 +51,8 @@
             #{sex},
             #{birthDay},
           	sysdate(),
-          	'no'
+          	'no',
+          	#{roleType}
         )
     </insert>
     
@@ -70,7 +71,9 @@
             		province,
             	 </if><if test="city !=null and city !=''">
             		city,
-           		 </if>createTime
+           		 </if>
+           		 createTime,
+           		 roleType
         ) VALUES (
         	#{openId},
             #{touXiang},
@@ -88,7 +91,8 @@
             <if test="city !=null and city !=''">
             	#{city},
             </if>
-          	sysdate()
+          	sysdate(),
+          	#{roleType}
         )
     </insert>
     

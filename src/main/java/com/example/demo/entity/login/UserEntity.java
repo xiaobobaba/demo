@@ -72,6 +72,22 @@ public class UserEntity implements java.io.Serializable {
 
 	/** 自我介绍 */
 	private String zwjs;
+	
+	/** 自我介绍 */
+	private String roleType;
+	
 	/**验证码*/
 	private String yzm;
+	
+	/**
+	 * 盐
+	 */
+	private String salt;
+	
+	public UserEntity(String email, String password) {
+		this.email=email;
+		this.password=password;
+	}
+	public UserEntity() {
+	}
 }
