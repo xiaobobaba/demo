@@ -3,6 +3,13 @@
 
 <!-- USERS -->
 <mapper namespace="com.example.demo.dao.login.UserDao">
+	<!--吃什么大转盘内容  -->
+	<select id ="findDishList" resultType="com.example.demo.entity.login.DishEntity">
+		SELECT * FROM dish LIMIT 0,10 ;
+	</select>
+	<update id="updateDish" parameterType="com.example.demo.entity.login.UserEntity">
+		UPDATE DISH SET dishName = #{dishName} where id = #{id}
+	</update>
     <!-- login登录 -->
     <select id="findUserLogin" resultType="com.example.demo.entity.login.UserEntity" parameterType="com.example.demo.entity.login.UserEntity">
         SELECT

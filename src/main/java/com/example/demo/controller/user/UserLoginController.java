@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.entity.login.DishEntity;
 import com.example.demo.entity.login.EmaillogEntity;
 import com.example.demo.entity.login.UserEntity;
 import com.example.demo.entity.login.WXEntity;
@@ -194,6 +195,17 @@ public class UserLoginController {
        }
 	 	return param;
     }
+	/**
+	 * 
+	* @Title: wxcallback  
+	* @Description: TODO(微信登录)  
+	* @param @param code
+	* @param @param response
+	* @param @return    参数  
+	* @return ModelAndView    返回类型  
+	* @date 2019年12月24日下午1:51:13  
+	* @throws
+	 */
 	@RequestMapping("/wxLogin")
     public ModelAndView wxcallback(String code,HttpServletResponse response){
 		   ModelAndView mv = new ModelAndView();
@@ -234,6 +246,16 @@ public class UserLoginController {
 		}
 		return mv;
      }
+	/**
+	 * 
+	* @Title: wxYanZheng  
+	* @Description: TODO(邮箱验证)  
+	* @param @param email
+	* @param @return    参数  
+	* @return ReturnParam<String>    返回类型  
+	* @date 2019年12月24日下午1:51:24  
+	* @throws
+	 */
 	@RequestMapping("/wxYanZheng")
 	public ReturnParam<String> wxYanZheng(@RequestBody EmaillogEntity email) {
 		ReturnParam<String> param = new ReturnParam<String>();
@@ -265,6 +287,46 @@ public class UserLoginController {
 		}
 		 param.setSuccess(true);
 		 param.setIsTan("发送成功");
+		return param;
+	}
+	/**
+	 * 
+	* @Title: updateDish  
+	* @Description: TODO(查询用户想吃什么)  
+	* @param @param dish
+	* @param @return    参数  
+	* @return ReturnParam<DishEntity>    返回类型  
+	* @date 2019年12月24日下午1:51:44  
+	* @throws
+	 */
+	@RequestMapping("/findDishList")
+	public ReturnParam<DishEntity> findDishList(DishEntity dish){
+		ReturnParam<DishEntity> param = new ReturnParam<DishEntity>();
+		if(StringUtil.isNull(dish.getDishName())  || dish.getId() != null) {
+			param.setList(userService.findDishList(dish));
+			param.setSuccess(true);
+		}
+		return param;
+	}
+	
+	/**
+	 * 
+	* @Title: updateDish  
+	* @Description: TODO(查询用户想吃什么)  
+	* @param @param dish
+	* @param @return    参数  
+	* @return ReturnParam<DishEntity>    返回类型  
+	* @date 2019年12月24日下午1:51:44  
+	* @throws
+	 */
+	@RequestMapping("/updateDish")
+	public ReturnParam<String> updateDish(DishEntity dish){
+		ReturnParam<String> param = new ReturnParam<String>();
+		if(StringUtil.isNull(dish.getDishName())  || dish.getId() != null) {
+			userService.updateDish(dish);
+			param.setIsTan("修改成功");
+			param.setSuccess(true);
+		}
 		return param;
 	}
 }

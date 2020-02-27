@@ -48,7 +48,7 @@ var login={
 		      				console.log(value);
 		      				$("#yzm").val(value);
 		      				var params = $('#add_form').serializeArray();
-		      				ajax(login.baseUrl+'login/userAdd',params,
+		      				ajax(login.baseUrl+'login/userAdd',null,false,
 		      			        	function(data) {
 		      							isTK(data);
 		      							if(data.success){

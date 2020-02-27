@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 import com.example.demo.entity.login.UserEntity;
 import com.example.demo.entity.user.UserRolePrivilege;
 import com.example.demo.service.login.UserService;
+import com.example.demo.util.RedisUtil;
 import com.example.demo.util.StringUtil;
 
 // 指定至少一个Realm 来实现认证（authentication）和/或授权（authorization） 
@@ -33,6 +34,9 @@ public class MyShiroRealm extends AuthorizingRealm {
 	
 	@Autowired
 	private PasswordHelper passwordHelper;
+	
+	@Autowired
+	private RedisUtil redis;
 	/**
 	 * 获取身份验证信息 Shiro中最终是通过Realm来获取应用程序中的用户、角色及权限信息
 	 *
@@ -56,6 +60,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 		if(user == null) {
 			throw new AccountException("账号密码错误");
 		}
+		redis.set(user.getEmail(), user);
 		SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user,
 				user.getPassword(),ByteSource.Util.bytes(token.getUsername()),getName());
 		return simpleAuthenticationInfo;
