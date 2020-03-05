@@ -47,7 +47,7 @@ function isTK(data){
 		if (data.isTan != '' && data.isTan != null) {
 			tankuang(data.isTan);
 		} else {
-			tankuang("操作失败");
+			tankuang("操作失败1");
 		}
 	}
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.login.UserDao;
+import com.example.demo.entity.login.DishEntity;
 import com.example.demo.entity.login.UserEntity;
 import com.example.demo.entity.user.UserRolePrivilege;
 import com.example.demo.service.login.UserService;
@@ -63,6 +64,33 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserRolePrivilege> findUserRole(UserEntity user) {
 		return userDao.findUserRole(user);
+	}
+	/**
+	 * 
+	* @Title: findDishList  
+	* @Description: TODO(查询吃什么大转盘数据)  
+	* @param @return    参数  
+	* @return List<DishEntity>    返回类型  
+	* @date 2019年12月24日下午1:37:58  
+	* @throws
+	 */
+	@Override
+	public List<DishEntity> findDishList(DishEntity dish) {
+		return userDao.findDishList(dish);
+	}
+	/**
+	 * 
+	* @Title: update  
+	* @Description: TODO(修改大转盘数据)  
+	* @param @param dish
+	* @param @return    参数  
+	* @return int    返回类型  
+	* @date 2019年12月24日下午1:48:01  
+	* @throws
+	 */
+	@Override
+	public int updateDish(DishEntity dish) {
+		return userDao.updateDish(dish);
 	}
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.service.login;
 
 import java.util.List;
 
+import com.example.demo.entity.login.DishEntity;
 import com.example.demo.entity.login.UserEntity;
 import com.example.demo.entity.user.UserRolePrivilege;
 
@@ -60,5 +61,26 @@ public interface UserService {
 	 */
 	List<UserRolePrivilege> findUserRole(UserEntity user);
 
-
+	/**
+	 * 
+	* @Title: findDishList  
+	* @Description: TODO(查询吃什么大转盘数据)  
+	* @param @return    参数  
+	* @return List<DishEntity>    返回类型  
+	* @date 2019年12月24日下午1:37:58  
+	* @throws
+	 */
+	List<DishEntity> findDishList(DishEntity dish);
+	
+	/**
+	 * 
+	* @Title: update  
+	* @Description: TODO(修改大转盘数据)  
+	* @param @param dish
+	* @param @return    参数  
+	* @return int    返回类型  
+	* @date 2019年12月24日下午1:48:01  
+	* @throws
+	 */
+	int updateDish(DishEntity dish);
 }

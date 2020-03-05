@@ -51,7 +51,7 @@
 											<li>
 												<div class="item-media">
 													<img id="img_login" 
-														src="http://thirdwx.qlogo.cn/mmopen/vi_32/raT5eXBicrlf95FrdSeiceb3bRNraQSC5PiaSYvHQHHqBqqsvVCQoLXibLVOib1z7NuxZRsmMm12Pt6PW4d2TCXRNkg/132"
+														src="/1.jpg"
 														class="layui-circle" height="44" width="44" style="position: relative;left:  140px;left: 15px position:absolute;" />
 												</div>
 											</li>
@@ -140,7 +140,16 @@
 								</form>
 							</div>
 						</div>
+						<!--吃什么页面  -->
 						<div id="tab3" class="tab">
+							<br><br>
+							<p align="center">好 好 减 肥  ，day day up ！</p>
+							<div align="center" style="margin-top: 20px;margin-bottom: -20px;">
+									<input id = "updateBiaoQian" >
+									<i class="layui-icon">&#xe602;</i>
+									<input id = "updateBiaoQian2">
+									&nbsp&nbsp&nbsp&nbsp&nbsp<i class="layui-icon" id="ZhuanHuan">&#xe605;</i>
+							</div>
 							<div class="content-block">
 								<img src="" id="fen-img" style="display: none;" />
 								<img src="" id="zuliao-img" style="display: none;" /> 
@@ -340,7 +349,9 @@
 
 
 	<!-- popup, panel 等放在这里 -->
-	<div class="panel-overlay"></div>
+	<div class="panel-overlay">
+	</div>
+	
 	<!-- Left Panel with Reveal effect -->
 	<div class="panel panel-left panel-reveal">
 		<div class="content-block">
@@ -372,10 +383,35 @@ var turnplate={
 		startAngle:0,				//开始角度
 		bRotate:false				//false:停止;ture:旋转
 };
-
+$("#ZhuanHuan").click(function (){
+	for (var i = 0; i < turnplate.restaraunts.length; i++) {
+		if($("#updateBiaoQian").val() == turnplate.restaraunts[i] && $("#updateBiaoQian").val() != '减肥'){
+			turnplate.restaraunts[i] = $("#updateBiaoQian2").val();
+			ajax(login.baseUrl+'login/updateDish',{"id":""+i+1+""},
+			        	function(data) {
+							isTK(data);
+							$("#updateBiaoQian").val("");
+							$("#updateBiaoQian2").val("");
+				     });
+			drawRouletteWheel();
+		}
+	}
+});
 $(document).ready(function(){
 	//动态添加大转盘的奖品与奖品区域背景颜色
-	turnplate.restaraunts = ["吃啥吃，减肥", "大食堂", "汤面", "粉", "砂锅米饭", "饺子", "粥 ", "干拌粉", "沙拉", "拌面"];
+	ajax(login.baseUrl+'login/findDishList',null,
+		      			        	function(data) {
+		      							isTK(data);
+		      							if(data.success){
+		      								var list = data.list;
+		      								for (var i = 0; i < list.length; i++) {
+												turnplate.restaraunts[i] = list[i].dishName
+											}
+		      								drawRouletteWheel();
+		      							}
+		      				        	
+		      				     });
+	//turnplate.restaraunts = ["吃啥吃，减肥", "大食堂", "汤面", "粉", "砂锅米饭", "饺子", "粥 ", "干拌粉", "沙拉", "拌面"];
 	turnplate.colors = ["#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF","#FFF4D6", "#FFFFFF", "#FFF4D6", "#FFFFFF","#FFF4D6", "#FFFFFF"];
 	var rotateTimeOut = function (){
 		$('#wheelcanvas').rotate({
@@ -403,12 +439,17 @@ $(document).ready(function(){
 			duration:8000,
 			callback:function (){
 				//中奖提示
-				tankuang("等会吃："+txt);
-				turnplate.bRotate = !turnplate.bRotate;
+				if(txt != '减肥'){
+					tankuang("等会吃："+txt);
+					turnplate.bRotate = !turnplate.bRotate;
+				}else{
+					tankuang("好好减肥 day day up");
+					turnplate.bRotate = !turnplate.bRotate;
+				}
 			}
 		});
 	};
-
+	
 	$('.pointer').click(function (){
 		if(turnplate.bRotate)return;
 		turnplate.bRotate = !turnplate.bRotate;

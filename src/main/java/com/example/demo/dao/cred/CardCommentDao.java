@@ -4,7 +4,8 @@ import java.util.List;
 
 import com.example.demo.entity.cred.CardCommentEntity;
 
-
+/**
+ */
 public interface CardCommentDao {
 	/**
 	 * 

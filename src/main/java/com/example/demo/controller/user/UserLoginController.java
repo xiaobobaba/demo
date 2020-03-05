@@ -21,14 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.entity.login.DishEntity;
 import com.example.demo.entity.login.EmaillogEntity;
 import com.example.demo.entity.login.UserEntity;
 import com.example.demo.entity.login.WXEntity;
 import com.example.demo.service.login.EmailLogService;
 import com.example.demo.service.login.UserService;
+import com.example.demo.shiro.PasswordHelper;
 import com.example.demo.shiro.ShiroConfig;
 import com.example.demo.util.HttpURLConectionGET;
-import com.example.demo.util.MathUtil;
 import com.example.demo.util.RedisUtil;
 import com.example.demo.util.ReturnParam;
 import com.example.demo.util.StringUtil;
@@ -65,6 +66,9 @@ public class UserLoginController {
 	
 	@Autowired
 	private RedisUtil redis;
+	
+	@Autowired
+	private PasswordHelper passwordHelper;
 
 	/**
 	 * 
@@ -79,20 +83,17 @@ public class UserLoginController {
 	public ReturnParam<String> login(@RequestBody UserEntity user){
 		ReturnParam<String> param = new ReturnParam<String>();
 		try {
-			SecurityUtils.setSecurityManager(shiroConfig.securityManager());
+			//SecurityUtils.setSecurityManager(shiroConfig.securityManager());
 			Subject subject = SecurityUtils.getSubject();
 			//用户登录认证
 			UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(),user.getPassword());
-			try {
-				subject.login(token);
-			} catch (Exception e) {
-				param.setIsTan("用户名密码不正确!");
-				param.setSuccess(false);
-				return param;
-			}
+			subject.login(token);
+			param.setSuccess(true);
+			param.setIsTan("登录成功");
 		} catch (Exception e) {
 			param.setSuccess(false);
-			param.setIsTan("操作失败");
+			param.setIsTan("账号密码错误");
+			System.out.println(e);
 			log.info("不好了报错了："+e);
 			return param;
 		}
@@ -136,13 +137,14 @@ public class UserLoginController {
 				param.setSuccess(false);
 				return param;
 			}
-			user.setPassword(MathUtil.getMD5(user.getEmail() + "#" + user.getPassword()));
+			passwordHelper.encryptPassword(user);
 			UserEntity userLogin = userService.findUserLogin(user);
 			if (userLogin != null) {
 				param.setIsTan("用户已存在!");
 				param.setSuccess(false);
 				return param;
 			}
+			user.setRoleType("3");
 			int userCount = userService.insertUser(user);
 			if (userCount > 0) {
 				param.setSuccess(true);
@@ -193,6 +195,17 @@ public class UserLoginController {
        }
 	 	return param;
     }
+	/**
+	 * 
+	* @Title: wxcallback  
+	* @Description: TODO(微信登录)  
+	* @param @param code
+	* @param @param response
+	* @param @return    参数  
+	* @return ModelAndView    返回类型  
+	* @date 2019年12月24日下午1:51:13  
+	* @throws
+	 */
 	@RequestMapping("/wxLogin")
     public ModelAndView wxcallback(String code,HttpServletResponse response){
 		   ModelAndView mv = new ModelAndView();
@@ -208,6 +221,7 @@ public class UserLoginController {
 			user.setOpenId(wx.getOpenid());
 			UserEntity userLogin = userService.findUserLogin(user);
 			if (userLogin == null) {
+				user.setRoleType("3");
 				user.setCity(wx.getCity());
 				user.setProvince(wx.getProvince());
 				user.setCountry(wx.getCountry());
@@ -232,6 +246,16 @@ public class UserLoginController {
 		}
 		return mv;
      }
+	/**
+	 * 
+	* @Title: wxYanZheng  
+	* @Description: TODO(邮箱验证)  
+	* @param @param email
+	* @param @return    参数  
+	* @return ReturnParam<String>    返回类型  
+	* @date 2019年12月24日下午1:51:24  
+	* @throws
+	 */
 	@RequestMapping("/wxYanZheng")
 	public ReturnParam<String> wxYanZheng(@RequestBody EmaillogEntity email) {
 		ReturnParam<String> param = new ReturnParam<String>();
@@ -263,6 +287,46 @@ public class UserLoginController {
 		}
 		 param.setSuccess(true);
 		 param.setIsTan("发送成功");
+		return param;
+	}
+	/**
+	 * 
+	* @Title: updateDish  
+	* @Description: TODO(查询用户想吃什么)  
+	* @param @param dish
+	* @param @return    参数  
+	* @return ReturnParam<DishEntity>    返回类型  
+	* @date 2019年12月24日下午1:51:44  
+	* @throws
+	 */
+	@RequestMapping("/findDishList")
+	public ReturnParam<DishEntity> findDishList(DishEntity dish){
+		ReturnParam<DishEntity> param = new ReturnParam<DishEntity>();
+		if(StringUtil.isNull(dish.getDishName())  || dish.getId() != null) {
+			param.setList(userService.findDishList(dish));
+			param.setSuccess(true);
+		}
+		return param;
+	}
+	
+	/**
+	 * 
+	* @Title: updateDish  
+	* @Description: TODO(查询用户想吃什么)  
+	* @param @param dish
+	* @param @return    参数  
+	* @return ReturnParam<DishEntity>    返回类型  
+	* @date 2019年12月24日下午1:51:44  
+	* @throws
+	 */
+	@RequestMapping("/updateDish")
+	public ReturnParam<String> updateDish(DishEntity dish){
+		ReturnParam<String> param = new ReturnParam<String>();
+		if(StringUtil.isNull(dish.getDishName())  || dish.getId() != null) {
+			userService.updateDish(dish);
+			param.setIsTan("修改成功");
+			param.setSuccess(true);
+		}
 		return param;
 	}
 }
